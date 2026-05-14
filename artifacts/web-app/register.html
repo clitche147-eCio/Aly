@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account — Aly</title>
+  <link rel="icon" href="/favicon.svg" />
+  <script type="module" src="./src/register.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+
+  <div id="offline-banner" class="hidden fixed top-4 left-4 right-4 z-50 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 text-amber-800 dark:text-amber-300 rounded-xl px-4 py-3 text-sm flex items-center gap-2 max-w-xl mx-auto">
+    ⚠️ <strong>Offline mode:</strong> Firebase not configured — data is saved locally on this device only.
+  </div>
+
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+  <div class="w-full max-w-sm">
+
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-2.5 font-bold text-xl">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40">
+          <span class="text-white font-extrabold">A</span>
+        </div>
+        <span class="text-slate-900 dark:text-white text-2xl">Aly</span>
+      </a>
+      <p class="text-slate-500 dark:text-slate-400 mt-3 text-sm">Create your free business dashboard.</p>
+    </div>
+
+    <div class="card shadow-xl shadow-slate-200/60 dark:shadow-slate-900">
+
+      <div id="register-error" class="hidden mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-lg px-3 py-2.5"></div>
+
+      <form id="register-form" class="space-y-4" novalidate>
+        <div>
+          <label class="form-label" for="business_name">Business Name</label>
+          <input id="business_name" name="business_name" type="text" class="form-input"
+            placeholder="My Awesome Shop" autocomplete="organization" required />
+        </div>
+
+        <div>
+          <label class="form-label" for="email">Email address</label>
+          <input id="email" name="email" type="email" class="form-input"
+            placeholder="you@example.com" autocomplete="email" required />
+        </div>
+
+        <div>
+          <label class="form-label" for="password">Password</label>
+          <input id="password" name="password" type="password" class="form-input"
+            placeholder="At least 6 characters" autocomplete="new-password" required />
+        </div>
+
+        <div>
+          <label class="form-label" for="confirm_password">Confirm Password</label>
+          <input id="confirm_password" name="confirm_password" type="password" class="form-input"
+            placeholder="Repeat your password" autocomplete="new-password" required />
+        </div>
+
+        <button id="register-btn" type="submit" class="btn-primary w-full py-2.5 text-base" data-label="Create Account">
+          Create Account
+        </button>
+      </form>
+
+      <div class="mt-5 pt-5 border-t border-slate-100 dark:border-slate-700 text-center">
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          Already have an account?
+          <a href="/login.html" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline ml-1">
+            Sign in →
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a href="/" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+        ← Back to home
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

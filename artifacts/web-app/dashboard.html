@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Aly</title>
+  <link rel="icon" href="/favicon.svg" />
+  <script type="module" src="./src/dashboard.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased overflow-hidden h-screen">
+
+<!-- Toast container -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-[100] space-y-2 pointer-events-none"></div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay" class="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center gap-4">
+  <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
+    <span class="text-white font-extrabold text-lg">A</span>
+  </div>
+  <div class="w-8 h-8 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+  <p class="text-slate-400 text-sm">Loading your dashboard…</p>
+</div>
+
+<!-- Offline banner -->
+<div id="offline-banner" class="hidden fixed top-0 inset-x-0 z-40 bg-amber-500 text-white text-center text-xs font-medium py-1.5">
+  ⚠️ Offline mode — data saved locally. <a href="#settings" class="underline">Configure Firebase</a> to sync across devices.
+</div>
+
+<!-- Mobile overlay -->
+<div id="overlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden"></div>
+
+<!-- App Shell -->
+<div id="app-shell" class="flex h-screen invisible">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside id="sidebar"
+    class="fixed lg:relative z-30 flex flex-col w-64 h-full bg-slate-900 dark:bg-slate-950 border-r border-slate-700/50 -translate-x-full lg:translate-x-0">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50">
+      <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
+        <span class="text-white font-extrabold text-sm">A</span>
+      </div>
+      <span class="text-white font-bold text-lg">Aly</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider px-3 mb-2">Main Menu</p>
+
+      <button data-nav="overview" class="nav-item active">
+        <span class="text-base">📊</span>
+        <span>Overview</span>
+      </button>
+      <button data-nav="products" class="nav-item">
+        <span class="text-base">📦</span>
+        <span>Products</span>
+      </button>
+      <button data-nav="sales" class="nav-item">
+        <span class="text-base">💰</span>
+        <span>Sales</span>
+      </button>
+      <button data-nav="activity" class="nav-item">
+        <span class="text-base">📋</span>
+        <span>Activity</span>
+      </button>
+
+      <div class="my-3 border-t border-slate-700/50"></div>
+      <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider px-3 mb-2">Account</p>
+
+      <button data-nav="settings" class="nav-item">
+        <span class="text-base">⚙️</span>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- User Info + Logout -->
+    <div class="px-3 py-4 border-t border-slate-700/50">
+      <div class="flex items-center gap-3 px-2 py-2 rounded-lg">
+        <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <span id="user-initial" class="text-white text-sm font-bold">?</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p id="user-business" class="text-xs font-semibold text-white truncate">My Business</p>
+          <p id="user-email" class="text-xs text-slate-500 truncate">—</p>
+        </div>
+        <button id="logout-btn" title="Log out"
+          class="w-7 h-7 flex items-center justify-center rounded-lg text-slate-500 hover:text-white hover:bg-slate-700 transition-colors text-sm">
+          🚪
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN AREA ═══════════════ -->
+  <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+
+    <!-- Top bar -->
+    <header class="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <button id="menu-toggle"
+          class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+          ☰
+        </button>
+        <h1 id="page-title" class="font-semibold text-slate-900 dark:text-white">Overview</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="dark-toggle"
+          title="Toggle dark mode"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+          <span id="dark-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable content area -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- ─── OVERVIEW ─────────────────────────────────────────────── -->
+      <section data-section="overview" class="p-4 sm:p-6 space-y-6">
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="stat-card">
+            <span class="stat-label">Total Revenue</span>
+            <span id="stat-revenue" class="stat-value text-slate-900 dark:text-white">$0.00</span>
+            <span class="text-xs text-slate-400">All time</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Products</span>
+            <span id="stat-products" class="stat-value text-slate-900 dark:text-white">0</span>
+            <span class="text-xs text-slate-400">In catalogue</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Sales</span>
+            <span id="stat-sales" class="stat-value text-slate-900 dark:text-white">0</span>
+            <span class="text-xs text-slate-400">Transactions</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Net Profit / Loss</span>
+            <span id="stat-profit" class="stat-value text-green-600">$0.00</span>
+            <span id="profit-label" class="text-xs text-green-500">↑ Net Profit</span>
+          </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4 text-sm">Revenue — Last 7 Days</h3>
+            <canvas id="revenue-chart"></canvas>
+          </div>
+          <div class="card">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4 text-sm">Top Products by Revenue</h3>
+            <canvas id="products-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="card">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4 text-sm">Monthly Revenue — {{ year }}</h3>
+          <canvas id="monthly-chart"></canvas>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <button data-nav="products" class="card-sm flex flex-col items-center gap-2 hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors cursor-pointer text-center">
+            <span class="text-2xl">📦</span>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Manage Products</span>
+          </button>
+          <button data-nav="sales" class="card-sm flex flex-col items-center gap-2 hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors cursor-pointer text-center">
+            <span class="text-2xl">💰</span>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Record Sale</span>
+          </button>
+          <button data-nav="activity" class="card-sm flex flex-col items-center gap-2 hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors cursor-pointer text-center">
+            <span class="text-2xl">📋</span>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-400">View Activity</span>
+          </button>
+          <button data-nav="settings" class="card-sm flex flex-col items-center gap-2 hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors cursor-pointer text-center">
+            <span class="text-2xl">⚙️</span>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Settings</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ─── PRODUCTS ─────────────────────────────────────────────── -->
+      <section data-section="products" class="hidden p-4 sm:p-6 space-y-5">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Products</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Manage your product catalogue</p>
+          </div>
+          <button id="add-product-btn" class="btn-primary">
+            <span>+</span> Add Product
+          </button>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="card-sm">
+          <input id="product-search" type="search" class="form-input"
+            placeholder="🔍  Search products by name or size…" />
+        </div>
+
+        <!-- Empty state -->
+        <div id="products-empty" class="card">
+          <div class="empty-state">
+            <div class="text-5xl mb-4">📦</div>
+            <p class="font-semibold text-slate-700 dark:text-slate-300">No products yet</p>
+            <p class="text-sm text-slate-400 dark:text-slate-500 mt-1 mb-6">Add your first product to get started</p>
+            <button id="add-product-btn-2" onclick="document.getElementById('add-product-btn').click()"
+              class="btn-primary">+ Add First Product</button>
+          </div>
+        </div>
+
+        <!-- Products table -->
+        <div id="products-table-wrap" class="card !p-0 overflow-hidden hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr>
+                  <th class="th" data-sort="name">Name ↕</th>
+                  <th class="th" data-sort="price">Price ↕</th>
+                  <th class="th" data-sort="quantity">Stock ↕</th>
+                  <th class="th">Size / Weight</th>
+                  <th class="th">Added</th>
+                  <th class="th">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SALES ─────────────────────────────────────────────────── -->
+      <section data-section="sales" class="hidden p-4 sm:p-6 space-y-5">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Sales</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Record and review your sales</p>
+          </div>
+        </div>
+
+        <!-- Sales stats -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="stat-card">
+            <span class="stat-label">Today</span>
+            <span id="sales-today" class="text-xl font-bold text-slate-900 dark:text-white">$0.00</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">This Week</span>
+            <span id="sales-week" class="text-xl font-bold text-slate-900 dark:text-white">$0.00</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">This Month</span>
+            <span id="sales-month" class="text-xl font-bold text-slate-900 dark:text-white">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Record Sale Form -->
+        <div class="card">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Record a Sale</h3>
+          <form id="sale-form" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+            <div class="sm:col-span-2">
+              <label class="form-label">Select Product</label>
+              <select id="sale-product-select" name="sale_product" class="form-select">
+                <option value="">Loading products…</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Quantity Sold</label>
+              <input name="sale_qty" type="number" class="form-input" min="1" placeholder="1" />
+            </div>
+            <div class="sm:col-span-3">
+              <button id="sale-submit-btn" type="submit" class="btn-primary" data-label="Record Sale">
+                💰 Record Sale
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sales history -->
+        <div id="sales-empty" class="card">
+          <div class="empty-state">
+            <div class="text-5xl mb-4">💰</div>
+            <p class="font-semibold text-slate-700 dark:text-slate-300">No sales recorded yet</p>
+            <p class="text-sm text-slate-400 dark:text-slate-500 mt-1">Use the form above to record your first sale.</p>
+          </div>
+        </div>
+
+        <div id="sales-table-wrap" class="card !p-0 overflow-hidden hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+            <h3 class="font-semibold text-sm text-slate-900 dark:text-white">Sales History</h3>
+            <span class="badge-blue">Last 50</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr>
+                  <th class="th">Product</th>
+                  <th class="th">Qty</th>
+                  <th class="th">Unit Price</th>
+                  <th class="th">Total</th>
+                  <th class="th">Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ACTIVITY ──────────────────────────────────────────────── -->
+      <section data-section="activity" class="hidden p-4 sm:p-6 space-y-5">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Activity</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Every action tracked automatically</p>
+          </div>
+        </div>
+        <div class="card">
+          <div id="activity-list"></div>
+        </div>
+      </section>
+
+      <!-- ─── SETTINGS ──────────────────────────────────────────────── -->
+      <section data-section="settings" class="hidden p-4 sm:p-6 space-y-5">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Settings</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Manage your account and preferences</p>
+          </div>
+        </div>
+
+        <!-- Business Profile -->
+        <div class="card space-y-4">
+          <h3 class="font-semibold text-slate-900 dark:text-white">Business Profile</h3>
+          <div>
+            <label class="form-label" for="settings-name">Business Name</label>
+            <input id="settings-name" type="text" class="form-input" placeholder="My Business" />
+          </div>
+          <div>
+            <label class="form-label" for="settings-expenses">Total Expenses ($)</label>
+            <input id="settings-expenses" type="number" class="form-input" placeholder="0.00" min="0" step="0.01" />
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Used to calculate your net profit/loss.</p>
+          </div>
+          <button id="settings-save" class="btn-primary">Save Changes</button>
+        </div>
+
+        <!-- Appearance -->
+        <div class="card">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Appearance</h3>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Dark Mode</p>
+              <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Easier on the eyes at night</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input id="dark-mode-setting" type="checkbox" class="sr-only peer" />
+              <div class="w-11 h-6 bg-slate-200 dark:bg-slate-600 rounded-full peer
+                peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5
+                after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all
+                peer-checked:after:translate-x-5"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Firebase setup info -->
+        <div class="card border-dashed border-amber-300 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/10">
+          <h3 class="font-semibold text-amber-800 dark:text-amber-300 mb-2">Firebase Setup</h3>
+          <p class="text-sm text-amber-700 dark:text-amber-400 leading-relaxed">
+            To enable cross-device sync, edit
+            <code class="bg-amber-100 dark:bg-amber-900/30 px-1 py-0.5 rounded text-xs font-mono">src/js/firebase-config.js</code>
+            and replace the placeholder values with your Firebase project credentials.
+          </p>
+          <ol class="text-sm text-amber-700 dark:text-amber-400 mt-3 space-y-1 list-decimal list-inside">
+            <li>Go to <strong>console.firebase.google.com</strong></li>
+            <li>Create a project → Add a Web App</li>
+            <li>Enable Email/Password Authentication</li>
+            <li>Enable Firestore Database</li>
+            <li>Copy the SDK config into firebase-config.js</li>
+          </ol>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="card border-red-200 dark:border-red-800">
+          <h3 class="font-semibold text-red-700 dark:text-red-400 mb-3">Account</h3>
+          <button id="logout-btn-settings"
+            onclick="document.getElementById('logout-btn').click()"
+            class="btn-danger">
+            🚪 Log Out
+          </button>
+        </div>
+      </section>
+
+    </main><!-- end main -->
+  </div><!-- end main area -->
+</div><!-- end app shell -->
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- Add / Edit Product Modal -->
+<div id="product-modal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-700">
+      <h2 id="product-modal-title" class="font-bold text-slate-900 dark:text-white">Add Product</h2>
+      <button id="product-modal-close"
+        class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        ✕
+      </button>
+    </div>
+    <form id="product-form" class="p-5 space-y-4">
+      <div>
+        <label class="form-label" for="p_name">Product Name *</label>
+        <input id="p_name" name="p_name" type="text" class="form-input" placeholder="e.g. Handmade Candle" required />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="form-label" for="p_price">Price ($) *</label>
+          <input id="p_price" name="p_price" type="number" class="form-input" placeholder="0.00" min="0" step="0.01" required />
+        </div>
+        <div>
+          <label class="form-label" for="p_qty">Quantity *</label>
+          <input id="p_qty" name="p_qty" type="number" class="form-input" placeholder="0" min="0" required />
+        </div>
+      </div>
+      <div>
+        <label class="form-label" for="p_size">Size / Weight <span class="text-slate-400 font-normal">(optional)</span></label>
+        <input id="p_size" name="p_size" type="text" class="form-input" placeholder="e.g. 250ml, Large, 500g" />
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button id="product-submit-btn" type="submit" class="btn-primary flex-1" data-label="Add Product">
+          Add Product
+        </button>
+        <button id="product-modal-cancel" type="button" class="btn-secondary flex-1">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal-backdrop hidden">
+  <div class="modal-box p-6 text-center">
+    <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">🗑️</div>
+    <h2 class="font-bold text-xl text-slate-900 dark:text-white mb-2">Delete Product?</h2>
+    <p class="text-slate-500 dark:text-slate-400 text-sm mb-1">You are about to permanently delete:</p>
+    <p id="delete-product-name" class="font-semibold text-slate-900 dark:text-white mb-6">"Product Name"</p>
+    <div class="flex gap-3">
+      <button id="delete-cancel" class="btn-secondary flex-1">Cancel</button>
+      <button id="delete-confirm" class="btn-danger flex-1">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

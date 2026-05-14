@@ -1,24 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Web App</title>
-    <meta name="description" content="Web App — built on Replit. Update this description to reflect the app." />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Web App" />
-    <meta property="og:description" content="Web App — built on Replit. Update this description to reflect the app." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Web App" />
-    <meta name="twitter:description" content="Web App — built on Replit. Update this description to reflect the app." />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aly — Smart Business Dashboard</title>
+  <link rel="icon" href="/favicon.svg" />
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+      <a href="/" class="flex items-center gap-2.5 font-bold text-xl">
+        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-sm">A</span>
+        </div>
+        <span class="text-slate-900 dark:text-white">Aly</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="/login.html"
+           class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors px-3 py-1.5">
+          Sign In
+        </a>
+        <a href="/register.html"
+           class="text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
+          Get Started Free
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-32 pb-24 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div data-animate class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 border border-indigo-200 dark:border-indigo-800">
+        ✨ Smart Dashboard for Real Businesses
+      </div>
+      <h1 data-animate class="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
+        Manage your business<br/>
+        <span class="text-indigo-600">smarter, not harder.</span>
+      </h1>
+      <p data-animate class="text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Aly gives you one clean dashboard to track products, record sales, monitor profits, and watch your business grow — all in real time.
+      </p>
+      <div data-animate class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/register.html"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 text-base">
+          Start for Free →
+        </a>
+        <a href="/login.html"
+           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold px-8 py-3.5 rounded-xl transition-colors text-base">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="border-y border-slate-100 dark:border-slate-800 py-8 px-6 bg-slate-50 dark:bg-slate-800/50">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-3xl font-extrabold text-slate-900 dark:text-white">100%</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Free to use</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-slate-900 dark:text-white">Real-time</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sync across devices</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-slate-900 dark:text-white">Dark mode</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Built-in</p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold text-slate-900 dark:text-white">Mobile</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Fully responsive</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+          Everything your business needs
+        </h2>
+        <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+          From tracking inventory to analysing growth — Aly handles it all in one place.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Feature cards -->
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl flex items-center justify-center text-xl mb-4">📦</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Product Management</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Add, edit, delete products. Track stock levels and get warnings before you run out.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-xl flex items-center justify-center text-xl mb-4">💰</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Sales Recording</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Record every sale in seconds. Stock updates automatically. Full history with timestamps.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-xl flex items-center justify-center text-xl mb-4">📊</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Business Analytics</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Revenue trends, top products, monthly charts. Know exactly where your money comes from.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-xl mb-4">💹</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Profit & Loss Tracking</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Green when you're profitable, red when you're not. Always know your financial position.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center text-xl mb-4">🔄</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Real-time Sync</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Powered by Firebase. Your data syncs instantly across all devices, wherever you are.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all">
+          <div class="w-10 h-10 bg-rose-100 dark:bg-rose-900/40 rounded-xl flex items-center justify-center text-xl mb-4">📋</div>
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">Activity Tracking</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Every action is logged automatically. See exactly what happened and when in your business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 px-6 bg-indigo-600">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+        Ready to take control of your business?
+      </h2>
+      <p class="text-indigo-200 text-lg mb-8">
+        Join thousands of business owners who use Aly to manage their operations smarter.
+      </p>
+      <a href="/register.html"
+         class="inline-flex items-center gap-2 bg-white hover:bg-indigo-50 text-indigo-600 font-bold px-8 py-3.5 rounded-xl transition-colors text-base shadow-lg">
+        Create Free Account →
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 px-6 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center">
+          <span class="text-white font-bold text-xs">A</span>
+        </div>
+        <span class="font-semibold text-slate-700 dark:text-slate-300">Aly</span>
+      </div>
+      <p class="text-sm text-slate-400">© 2024 Aly. Built for real businesses.</p>
+      <div class="flex items-center gap-4 text-sm text-slate-400">
+        <a href="/login.html" class="hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Login</a>
+        <a href="/register.html" class="hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Register</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
 </html>

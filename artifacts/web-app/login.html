@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Aly</title>
+  <link rel="icon" href="/favicon.svg" />
+  <script type="module" src="./src/login.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+
+  <!-- Offline banner -->
+  <div id="offline-banner" class="hidden fixed top-4 left-4 right-4 z-50 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 text-amber-800 dark:text-amber-300 rounded-xl px-4 py-3 text-sm flex items-center gap-2 max-w-xl mx-auto">
+    ⚠️ <strong>Offline mode:</strong> Firebase not configured — data is saved locally on this device only.
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+  <!-- Card -->
+  <div class="w-full max-w-sm">
+
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-2.5 font-bold text-xl">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/40">
+          <span class="text-white font-extrabold">A</span>
+        </div>
+        <span class="text-slate-900 dark:text-white text-2xl">Aly</span>
+      </a>
+      <p class="text-slate-500 dark:text-slate-400 mt-3 text-sm">Welcome back! Sign in to your account.</p>
+    </div>
+
+    <!-- Form card -->
+    <div class="card shadow-xl shadow-slate-200/60 dark:shadow-slate-900">
+
+      <!-- Error message -->
+      <div id="login-error" class="hidden mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-lg px-3 py-2.5"></div>
+
+      <form id="login-form" class="space-y-4" novalidate>
+        <div>
+          <label class="form-label" for="email">Email address</label>
+          <input id="email" name="email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="form-label !mb-0" for="password">Password</label>
+            <button type="button" id="forgot-link"
+              class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium">
+              Forgot password?
+            </button>
+          </div>
+          <input id="password" name="password" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+
+        <button id="login-btn" type="submit" class="btn-primary w-full py-2.5 text-base" data-label="Sign In">
+          Sign In
+        </button>
+      </form>
+
+      <div class="mt-5 pt-5 border-t border-slate-100 dark:border-slate-700 text-center">
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          Don't have an account?
+          <a href="/register.html" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline ml-1">
+            Create one free →
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-6 text-center">
+      <a href="/" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+        ← Back to home
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
